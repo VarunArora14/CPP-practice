@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1573544564 source:c:\users\naresh kumar\desktop\doc cod\tricky calc\main.cpp
+	<iostream>
+	<stdio.h>
+	<conio.h>
+

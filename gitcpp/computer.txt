@@ -1,0 +1,1498 @@
+// strstr() returns pointer which points to the remaining part after the first character of the first string
+//modify() not overwriting
+//ipc of first copied into second also
+//don't use ios::app when opening a file . It means output will append file instead of overwriting . Instead use ios::ate which tells it to seek end of file when opened so it wont truncate
+//change() values , police analysis , show different , designation , strcmp for many crimes
+
+#include<fstream.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<stdio.h>
+#include<process.h>
+#include<time.h>
+//CRIME NUMBER ALLOTMENT
+static int count=0,count2=0;
+float cases1=0.0;
+int flag1=0;
+
+//count=rand()%10000;
+class crime
+{
+int crno,day,month,year,count_crime;
+char complexion[25],name[30],victim[30],status[10];
+public:
+int age,jail;
+char crim[40],state[20],punish[20],ipc_name[30];
+int getcrno()
+{
+return crno;
+}
+void getdata();
+void change();
+void show();
+int ipc(int);
+int punishment(int);
+void copy_crime();
+void crime_name();
+void searchc();
+void delete1c();
+void modifyc();
+void insertc();
+crime()
+{
+ crno=0,day=0,month=0,year=0;
+ age=0,jail=0,count_crime=0;
+ }
+}s,snew;
+
+
+class police
+{
+int age,dojy,dojm,dojd,cases,pno;   //police analysis based on cases and age
+char rep[15],name[30];
+public:
+void getdata();
+void change();
+void show();
+int getpno()
+{
+return pno;
+}
+void insertp();
+void delete1p();
+void modifyp();
+void searchp();
+}p,pnew;
+
+
+class analysis: public crime
+{
+float a[10],c[10];
+//data members containing values from ipc and punishment
+public:
+void state();
+void crimes();
+void crime_show();
+//void stats();  - police
+}an ;
+
+//from strcmp crime , a new char array stores crime every time and then through crime analysis
+
+void analysis:: state()
+{
+ifstream fin("varun.dat",ios::in|ios::binary);
+if(!fin)
+{
+exit(1);
+}
+for(int i=0;i<10;i++)
+{
+a[i]=0;
+}
+cout<<endl<<"The total number of cases are : "<<count<<endl;
+for(i=0;i<count;i++)
+{
+fin.read((char*)&s,sizeof(s));
+if(strcmp(s.state,"Delhi")==0)
+{
+a[0]+=1;
+}
+if(strcmp(s.state,"Maharashtra")==0)
+{
+a[1]+=1;
+}
+if(strcmp(s.state,"Madhya Pradesh")==0)
+{
+a[2]+=1;
+}
+if(strcmp(s.state,"Uttar Pradesh")==0)
+{
+a[3]+=1;
+}
+if(strcmp(s.state,"Rajasthan")==0)
+{
+a[4]+=1;
+}
+if(strcmp(s.state,"Bihar")==0)
+{
+a[5]+=1;
+}
+if(strcmp(s.state,"Kerala")==0)
+{
+a[6]+=1;
+}
+if(strcmp(s.state,"West Bengal")==0)
+{
+a[7]+=1;
+}
+if(strcmp(s.state,"Punjab")==0)
+{
+a[8]+=1;
+}
+if(strcmp(s.state,"Jammu and Kashmir")==0)
+{
+a[9]+=1;
+}
+}
+cout<<"Total cases in each of the state are : "<<endl;
+cout<<"Delhi : "<<a[0] <<" - "<<(a[0]/count)*100<<" % "<<endl;
+cout<<"Maharashtra : "<<a[1]<<" - "<<(a[1]/count)*100<<" % "<<endl;
+cout<<"Madhya Pradesh : "<<a[2]<<" - "<<(a[2]/count)*100<<" % "<<endl;
+cout<<"Uttar Pradesh : "<<a[3]<<" - "<<(a[3]/count)*100<<" % "<<endl;
+cout<<"Rajasthan : "<<a[4]<<" - "<<(a[4]/count)*100<<" % "<<endl;
+cout<<"Bihar : "<<a[5]<<" - "<<(a[5]/count)*100<<" % "<<endl;
+cout<<"Kerala : "<<a[6]<<" - "<<(a[6]/count)*100<<" % "<<endl;
+cout<<"West Bengal : "<<a[7]<<" - "<<(a[7]/count)*100<<" % "<<endl;
+cout<<"Punjab : "<<a[8]<<" - "<<(a[8]/count)*100<<" % "<<endl;
+cout<<"Jammu and Kashmir : "<<a[9]<<" - "<<(a[9]/count)*100<<" % "<<endl<<endl;
+}
+
+
+void analysis::crimes()
+{
+cases1=0;
+ifstream fin("varun.dat",ios::in|ios::binary);
+if(!fin)
+{
+exit(1);
+}
+for(int i=0;i<10;i++)
+{
+c[i]=0;
+}
+cout<<endl<<"The total number of cases are : "<<count<<endl;
+for(i=0;i<count;i++)
+{
+fin.read((char*)&s,sizeof(s));
+//instead of strcmp , make function to compare s.cpp
+if(strstr(s.crim,"Theft,")>0)
+{
+c[0]+=1;
+}
+if(strstr(s.crim,"Murder,")>0)
+{
+c[1]+=1;
+}
+if(strstr(s.crim,"Rape,")>0)
+{
+c[2]+=1;
+}
+if(strstr(s.crim,"Domestic Violence,")>0)
+{
+c[3]+=1;
+}
+if(strstr(s.crim,"Kidnapping,")>0)
+{
+c[4]+=1;
+}
+if(strstr(s.crim,"Hit And Run (Automobiles),")>0)
+{
+c[5]+=1;
+}
+if(strstr(s.crim,"Property Cheating / Scandals,")>0)
+{
+c[6]+=1;
+}
+if(strstr(s.crim,"Terrorist Attack,")>0)
+{
+c[7]+=1;
+}
+if(strstr(s.crim,"Cyber Crime,")>0)
+{
+c[8]+=1;
+}
+if(strstr(s.crim,"Drug Trafficking,")>0)
+{
+c[9]+=1;
+}
+}
+for(i=0;i<10;i++)
+{
+cases1+=c[i] ;
+}
+crime_show() ;
+}
+//decide how to display crime analysis
+void analysis::crime_show()
+{
+cout<<"Total cases in each of the state are : "<<endl;
+cout<<"Theft : "<<c[0] <<" - "<<(c[0]/cases1)*100<<" % "<<endl;
+cout<<"Murder : "<<c[1]<<" - "<<(c[1]/cases1)*100<<" % "<<endl;
+cout<<"Rape : "<<c[2]<<" - "<<(c[2]/cases1)*100<<" % "<<endl;
+cout<<"Domestic Violence : "<<c[3]<<" - "<<(c[3]/cases1)*100<<" % "<<endl;
+cout<<"Kidnap  : "<<c[4]<<" - "<<(c[4]/cases1)*100<<" % "<<endl;
+cout<<"Hit And Run (Automobiles) "<<c[5]<<" - "<<(c[5]/cases1)*100<<" % "<<endl;
+cout<<"Property Cheating / Scandals : "<<c[6]<<" - "<<(c[6]/cases1)*100<<" % "<<endl;
+cout<<"Terrorist Attack : "<<c[7]<<" - "<<(c[7]/cases1)*100<<" % "<<endl;
+cout<<"Cyber Crime : "<<c[8]<<" - "<<(c[8]/cases1)*100<<" % "<<endl;
+cout<<"Drug Trafficking : "<<c[9]<<" - "<<(c[9]/cases1)*100<<" % "<<endl;
+}
+
+
+void crime::crime_name()
+{
+//kind of declares crim to null
+strcpy(crim,"");
+strcpy(ipc_name,"");
+jail=0;
+int x,flag=0;
+char ch='y';
+cout<<endl<<"Choose the following crimes - ";
+do
+{
+A:
+;
+cout<<endl<<endl<<" 1. Theft "<<endl;
+cout<<" 2. Murder "<<endl;
+cout<<" 3. Rape "<<endl;
+cout<<" 4. Domestic Violence "<<endl;
+cout<<" 5. Kidnapping "<<endl;
+cout<<" 6. Hit and Run (Automobile) "<<endl;
+cout<<" 7. Property Cheating / Scandals "<<endl;
+cout<<" 8. Terrorist Attack "<<endl;
+cout<<" 9. Cyber Crime "<<endl;
+cout<<" 10. Drug trafficking "<<endl<<endl;
+cout<<"Enter your choice ";
+cin>>x;
+switch(x)
+{
+case 1:   strcat(crim,"Theft,");
+ipc(1);
+break;
+case 2:   strcat(crim,"Murder,");
+ipc(2);
+break;
+case 3:  strcat(crim,"Rape,");
+ipc(3);
+break;
+case 4:  strcat(crim,"Domestic Violence,");
+ipc(4);
+break;
+case 5:  strcat(crim,"Kidnapping,");
+ipc(5);
+break;
+case 6:  strcat(crim,"Hit And Run (Automobiles),");
+ipc(6);
+break;
+case 7:  strcat(crim,"Property Cheating / Scandals,");
+ipc(7);
+break;
+case 8:  strcat(crim,"Terrorist Attack,");
+ipc(8);
+break;
+case 9:   strcat(crim,"Cyber Crime,");
+ipc(9);
+break;
+case 10:  strcat(crim,"Drug Trafficking,");
+ipc(10);
+break;
+default:  cout<<"No such choice available ";
+flag=1;
+}
+if(flag==1)
+{
+goto A;
+}
+//make ipc and analysis call from here
+cout<<endl<<endl<<"Do you want to enter more crimes ? ";
+cin>>ch;
+
+}
+while(ch=='y');
+}
+
+
+int crime::ipc(int x)
+{
+//kind of declares it to null value
+if(x==1)  //THEFT
+{
+//number
+//strcat
+strcat(ipc_name,"363,");
+punishment(1);
+}
+if(x==2)  //MURDER
+{
+//number
+strcat(ipc_name,"302,");
+punishment(2);
+}
+if(x==3)          //R
+{
+//number
+strcat(ipc_name,"376A,");
+punishment(3);
+}
+if(x==4)          //DOM. VIOL.
+{
+//number
+strcat(ipc_name,"498A,");
+punishment(4);
+}
+if(x==5)     //KIDNAP
+{
+//number
+strcat(ipc_name,"363,");
+punishment(5);
+}
+if(x==6)           //Hit
+ // no s.ipc_name
+{
+//number
+strcat(ipc_name,"304A,");
+punishment(6);
+}
+if(x==7)     //Property cheat
+{
+//number
+strcat(ipc_name,"420,");
+punishment(7);
+}
+if(x==8)    //TERROR
+{
+//number
+strcat(ipc_name,"121,");
+punishment(8);
+}
+if(x==9)   //Cyber Crime
+{
+//number
+strcat(ipc_name,"43A,");
+punishment(9);
+}
+if(x==10)       //DRUG
+{
+ //number
+strcat(ipc_name,"23,");
+punishment(10);
+}
+//strlen(s.ipc_nam)-=1;
+}
+int crime::punishment(int m)
+{
+randomize();
+int flag=0;
+if(m==1)
+{
+jail=jail+3+random(5);
+}
+if(m==2)
+{
+flag=2;
+}
+if(m==3)
+{
+jail=jail+20+random(80);
+}
+if(m==4)
+{
+jail=jail+3;
+}
+if(m==5)
+{
+jail=jail+7+random(8);
+}
+if(m==6)
+{
+jail=jail+2+random(5);
+}
+if(m==7)
+{
+jail=jail+7+random(10);
+}
+if(m==8)
+{
+flag=1;
+}
+if(m==9)
+{
+jail=jail+random(10)+3;
+}
+if(m==10)
+{
+jail=jail+15+random(13);
+}
+if(jail+age>80)
+{
+flag=1;
+}
+
+count_crime=flag ;
+// flag1 function in show();
+}
+
+
+void crime::getdata()
+{
+int a,flag=0;
+cout<<endl<<"Date of entry  "<<endl<<endl<<"Enter date of day : ";
+cin>>day;
+cout<<"Enter month : ";
+cin>>month;
+cout<<"Enter year : ";
+cin>>year;
+cout<<endl;
+cout<<"Criminal name: ";
+gets(name);
+cout<<"Enter criminal age : ";
+cin>>age;
+cout<<"Criminal's complexion : ";
+gets(complexion);
+cout<<"Victim's name :";
+gets(victim);
+X:
+;
+cout<<endl<<endl;
+cout<<"Choose the state :" <<endl<<endl;
+cout<<" 1. Delhi "<<endl;
+cout<<" 2. Maharashtra "<<endl;
+cout<<" 3. Madhya Pradesh "<<endl;
+cout<<" 4. Uttar Pradesh "<<endl;
+cout<<" 5. Rajasthan "<<endl;
+cout<<" 6. Bihar "<<endl;
+cout<<" 7. Kerala "<<endl;
+cout<<" 8. West Bengal "<<endl;
+cout<<" 9. Punjab "<<endl;
+cout<<" 10. Jammu and Kashmir "<<endl;
+cin>>a;
+switch(a)
+{
+case 1 : strcpy(state,"Delhi");
+break;
+case 2 : strcpy(state,"Maharashtra");
+break;
+case 3: strcpy(state,"Madhya Pradesh");
+break;
+case 4: strcpy(state,"Uttar Pradesh");
+break;
+case 5 : strcpy(state,"Rajasthan");
+break;
+case 6: strcpy(state,"Bihar");
+break;
+case 7: strcpy(state,"Kerala");
+break;
+case 8: strcpy(state,"West Bengal");
+break;
+case 9: strcpy(state,"Punjab");
+break;
+case 10: strcpy(state,"Jammu and Kashmir");
+break;
+default: cout<<"No such option avalable ";
+flag=1;
+}
+if(flag==1)
+{
+goto X;
+}
+
+A:
+;
+cout<<"Status : ";
+cout<<endl<<endl<<" 1. Pending "<<endl<<" 2. Convicted "<<endl;
+cout<<"Enter your choice : ";
+cin>>a;
+switch(a)
+{
+case 1: strcpy(status,"Pending") ;
+break;
+case 2: strcpy(status,"Convicted");
+break;
+default: cout<<"No such option available ."  ;
+flag=1;
+}
+if(flag==1)
+{
+goto A;
+}
+crime_name();	       //CALL FUNCTIONS IPC AND PUNISHMENT
+time_t t;
+srand((unsigned)time(&t))   ;
+crno=rand()%10000;
+}
+
+
+void crime::show()
+{
+cout<<"Criminal id number : "<<crno ;
+cout<<endl<<"Date of entry  : "<<day<<"/"<<month<<"/"<<year;
+cout<<endl<<"Criminal name: ";
+puts(name);
+cout<<"Criminal's complexion : ";
+puts(complexion);
+cout<<"Criminal age : "<<age;
+cout<<endl<<"Victim's name ";
+puts(victim);
+cout<<"State : ";
+puts(state);
+cout<<"Status : ";
+puts(status);
+
+cout<<"The ipc charges against the criminal are : ";
+puts(ipc_name);
+cout<<"The punishment for criminal is : ";
+if(count_crime==1)
+{
+strcpy(punish,"LIFETIME IMPRISONMENT ! ");
+}
+else if (count_crime==2)
+{
+strcpy(punish,"SENTENCED TO DEATH ");
+}
+else
+{
+cout<<s.jail;
+strcpy(punish," YEARS");
+}
+puts(punish);
+cout<<"the crimes commited are :" ;
+puts(crim);
+
+//clear crim
+//SHOW IPC AND PUNISHMENT   ;
+}
+
+
+void crime::change()
+{
+int a,flag=0,nage;
+char nname[30],ncomplexion[30],nvictim[30],nstatus[15],nstate[20];
+//CRIME FUNCTION TO SELECT IPC,CRIME,PUNISH
+int nday,nmonth,nyear;
+cout<<"New Date of entry  . Press -1 to retain old values : "<<endl<<endl;
+cout<<"Enter new day : ";
+cin>>nday;
+if(nday!=-1)
+{
+day=nday;
+}
+cout<<"Enter new month : ";
+cin>>nmonth;
+if(nmonth!=-1)
+{
+month=nmonth;
+}
+cout<<"Enter new year : ";
+cin>>nyear;
+if(nyear!=-1)
+{
+year=nyear;
+}
+cout<<" New Criminal name . Press $ to retain values : ";
+gets(nname);
+if(strcmp(nname,"$")!=0)
+{
+strcpy(name,nname);
+}
+cout<<"Enter new age . Press -1 to retain values :";
+cin>>nage;
+if(nage!=-1)
+{
+age=nage;
+}
+cout<<"New Criminal's complexion . Press $ to retain values : ";
+gets(ncomplexion);
+if(strcmp(ncomplexion,"$")!=0)
+{
+strcpy(complexion,ncomplexion);
+}
+cout<<"New Victim's name  . Press $ to retain values :  ";
+gets(nvictim);
+if(strcmp(nvictim,"$")!=0)
+{
+strcpy(victim,nvictim);
+}
+cout<<"New state name . Press '$' to retain values : ";
+X:
+;
+cout<<endl<<endl;
+cout<<"Choose the state :" <<endl<<endl;
+cout<<" 1. Delhi "<<endl;
+cout<<" 2. Maharashtra "<<endl;
+cout<<" 3. Madhya Pradesh "<<endl;
+cout<<" 4. Uttar Pradesh "<<endl;
+cout<<" 5. Rajasthan "<<endl;
+cout<<" 6. Bihar "<<endl;
+cout<<" 7. Kerala "<<endl;
+cout<<" 8. West Bengal "<<endl;
+cout<<" 9. Punjab "<<endl;
+cout<<" 10. Jammu and Kashmir "<<endl;
+cin>>a;
+switch(a)
+{
+case 1 : strcpy(nstate,"Delhi");
+break;
+case 2 : strcpy(nstate,"Maharashtra");
+break;
+case 3: strcpy(nstate,"Madhya Pradesh");
+break;
+case 4: strcpy(nstate,"Uttar Pradesh");
+break;
+case 5 : strcpy(nstate,"Rajasthan");
+break;
+case 6: strcpy(nstate,"Bihar");
+break;
+case 7: strcpy(nstate,"Kerala");
+break;
+case 8: strcpy(nstate,"West Bengal");
+break;
+case 9: strcpy(nstate,"Punjab");
+break;
+case 10: strcpy(nstate,"Jammu and Kashmir");
+break;
+default: cout<<"No such option avalable ";
+flag=1;
+}
+if(flag==1)
+{
+goto X;
+}
+strcpy(state,nstate);
+A:
+;
+cout<<"New Status : "<<endl<<" 1. Pending "<<endl<<" 2. Convicted "<<endl<<endl;
+cout<<"Enter your choice : ";
+cin>>a;
+switch(a)
+{
+case 1: strcpy(nstatus,"Pending") ;
+break;
+case 2: strcpy(nstatus,"Convicted");
+break;
+default: cout<<"No such option available ."  ;
+flag=1;
+}
+if(flag==1)
+{
+goto A;
+}
+strcpy(status,nstatus) ;
+}
+//CRIME,IPC,PUNISHMENT SHOW
+
+
+
+int i,flag=0,a;
+void crime::searchc()
+{
+flag=0;
+a=0;
+if(count>0)
+{
+ifstream fin("varun.dat",ios::in|ios::binary);
+for(i=0;i<count;i++)
+{
+fin.read((char*)&s,sizeof(s));
+cout<<s.getcrno()<<endl;
+}
+cout<<"enter the criminal id. to  search for ";
+cin>>a;
+fin.seekg(0);
+for(int i=0;i<count;i++)
+{
+fin.read((char*)&s,sizeof(s));
+if (s.getcrno()==a)
+{
+cout<<endl<<"The record contains :  "<<endl<<endl;
+s.show();
+flag=1;
+break;
+}
+}
+if(flag==0)
+{
+cout<<"record not found ";
+}
+else
+cout<<endl<<"the search was successful ";
+fin.close();
+}
+
+else
+{
+cout<<"no such records exists in the file ";
+}
+}
+
+void crime::insertc()
+{
+flag=0;
+a=0;
+long pos=0;
+ofstream fx("hello.dat",ios::binary|ios::app);
+if(!fx)
+{
+exit(1);
+}
+ifstream fin("varun.dat",ios::binary|ios::app);
+if(!fin)
+{
+cout<<"no such file exists ";
+exit(1);
+}
+cout<<"enter the data of criminal which has to be added ";
+snew.getdata();
+for(i=0;i<count;i++)
+{
+fin.read((char*)&s,sizeof(s));
+if(s.getcrno()<snew.getcrno())
+{
+fx.write((char*)&s,sizeof(s));
+pos=fin.tellg();
+}
+else
+{
+fx.write((char*)&snew,sizeof(snew));
+flag=1;
+break;
+}
+}
+fin.seekg(pos);
+if(flag==0)
+{
+fx.write((char*)&snew,sizeof(snew));
+}
+if(i<count)
+{
+for(int m=i;m<count;m++)
+{
+fin.read((char*)&s,sizeof(s));
+fx.write((char*)&s,sizeof(s));
+}
+}
+count+=1;
+fin.close();
+fx.close();
+remove("varun.dat");
+rename("hello.dat","varun.dat");
+ifstream fin1("varun.dat");
+cout<<endl<<" Record added successfully "<<endl;
+getch();
+}
+
+void crime::delete1c()
+{
+flag=0;
+a=0;
+if(count>0)
+{
+ofstream fout("hello.dat",ios::binary|ios::app);
+if(!fout)
+{
+cout<<"no such file exists ";
+exit(1);
+}
+ifstream fin("varun.dat",ios::binary|ios::app);
+if(!fin)
+{
+cout<<"no such file present ";
+exit(1);
+}
+for(i=0;i<count;i++)
+{
+fin.read((char*)&s,sizeof(s));
+cout<<s.getcrno();
+cout<<endl;
+}
+fin.close();
+cout<<endl<<"enter the criminal id. to be removed ";
+cin>>a;
+fin.open("varun.dat",ios::binary|ios::app);
+if(!fin)
+{
+exit(1);
+}
+char ch;
+for(i=0;i<count;i++)
+{
+fin.read((char*)&s,sizeof(s));
+if(s.getcrno()==a)
+{
+cout<<endl<<"the record to be deleted contains "<<endl;
+s.show();
+flag=1;
+cout<<endl<<"are you sure you want to delete this record ";
+cin>>ch;
+if(ch=='n')
+{
+fout.write((char*)&s,sizeof(s)) ;
+}
+else if(ch=='y')
+{
+cout<<"record is deleted "<<endl;
+flag=2;
+}
+}
+else
+{
+cout<<endl;
+fout.write((char*)&s,sizeof(s));
+}
+}
+if(flag==0)
+{
+cout<<"no such criminal id. found ";
+}
+if (flag==2)
+{
+count--;
+}
+fout.close();
+fin.close();
+remove("varun.dat");
+rename("hello.dat","varun.dat");
+if(count>0)
+{
+cout<<endl<<"now the record contains "<<endl<<endl;
+ifstream fx("varun.dat",ios::in|ios::binary);
+for(i=0;i<count;i++)
+{
+fx.read((char*)&s,sizeof(s));
+s.show();
+}
+fx.close();
+}
+else
+{
+cout<<"The file is empty now";
+}
+}
+else
+{
+cout<<"no criminal records are present in the file";
+}
+}
+
+
+void crime::modifyc()
+{
+if(count>0)
+{
+flag=0;
+int r;
+cout<<endl<<"the file currently looks like - "<<endl;
+ifstream fin("varun.dat",ios::in|ios::binary);
+if(!fin)
+{
+cout<<"no such file exists ";
+exit(1);
+}
+for(i=0;i<count;i++)
+{
+fin.read((char*)&s,sizeof(s));
+cout<<s.getcrno()<<endl;
+}
+cout<<"enter the criminal id. of accused whose record has to be modified \n";
+cin>>r;
+fin.close();
+//while using ate , go back from front
+fstream fio("varun.dat",ios::in|ios::out|ios::binary);
+if(!fio)
+{
+cout<<endl<<"no such file exits ";
+exit(1);
+}
+long pos=0;
+for(int i=0;i<count;i++)
+{
+pos=fio.tellg();
+fio.read((char*)&s,sizeof(s));
+if(s.getcrno()==r)
+{
+s.change();
+flag=1;
+fio.seekp(pos);
+fio.write((char*)&s,sizeof(s)) ;
+break;
+}
+}
+if(flag==0)
+{
+cout<<"no such record exists ";
+}
+fio.seekg(0);
+cout<<"total records are "<<count<<endl<<endl;
+cout<<endl<<endl<<"the contents of file are - "<<endl<<endl;
+for(i=0;i<count;i++)
+//while(!fio.eof())
+{
+fio.read((char*)&s,sizeof(s));
+s.show();
+}
+fio.close();
+}
+else
+{
+cout<<"No records are present in the file ";
+}
+}
+
+
+//POLICE
+void police::getdata()
+{
+cout<<endl<<endl<<"Date of entry  "<<endl<<endl<<"Enter day : ";
+cin>>dojd;
+cout<<"Enter month : ";
+cin>>dojm;
+cout<<"Enter year : ";
+cin>>dojy;
+cout<<endl<<"Name : ";
+gets(name);
+cout<<"Enter age : ";
+cin>>age;
+cout<<"Enter cases solved : ";
+cin>>cases;
+cout<<"Enter designation : ";
+gets(rep);
+time_t t;
+srand((unsigned)time(&t))   ;
+pno=rand()%1000;
+}
+
+
+void police::show()
+{
+cout<<"Id no. is : "<<pno<<endl;
+cout<<endl<<"Date of joining : "<<dojd<<"/"<<dojm<<"/"<<dojy;
+cout<<endl<<"Name: ";
+puts(name);
+cout<<"Age : "<<age<<endl;
+cout<<"Cases Solved : "<<cases<<endl;
+cout<<"Designation : ";
+puts(rep);
+}
+
+
+void police::change()
+{
+char nname[30],nrep[30];
+int ndojd,ndojm,ndojy,nage,ncases;
+cout<<"New Date of date of joining . Press -1 to retain old values : "<<endl<<endl;
+cout<<"New day : ";
+cin>>ndojd;
+if(ndojd!=-1)
+{
+dojd=ndojd;
+}
+cout<<"New month : ";
+cin>>ndojm;
+if(ndojm!=-1)
+{
+dojm=ndojm;
+}
+cout<<"New year : ";
+cin>>ndojy;
+if(ndojy!=-1)
+{
+dojy=ndojy;
+}
+cout<<" New name . Press $ to retain values : ";
+gets(nname);
+if(strcmp(nname,"$")!=0)
+{
+strcpy(name,nname);
+}
+cout<<"enter new age . Press -1 to retain : ";
+cin>>nage;
+if(nage!=-1)
+{
+age=nage;
+}
+cout<<"Enter new number of cases . Press -1 to retain " ;
+cin>>ncases;
+if(ncases!=-1)
+{
+cases=ncases;
+}
+cout<<"New designation .Press $ to retain : ";
+gets(nrep);
+if(strcmp(nrep,"$")!=0)
+{
+strcpy(rep,nrep);
+}
+}
+
+
+void police::searchp()
+{
+if(count2>0)
+{
+int a;
+ifstream fin("varun1.dat",ios::binary|ios::app);
+for(i=0;i<count2;i++)
+{
+fin.read((char*)&p,sizeof(p));
+cout<<p.getpno()<<endl;
+}
+cout<<"enter the id. no. to  search for ";
+cin>>a;
+//V. IMPORTANT
+fin.seekg(0);
+for(int i=0;i<count2;i++)
+{
+fin.read((char*)&p,sizeof(p));
+if (p.getpno()==a)
+{
+cout<<endl<<"The record contains :  "<<endl<<endl;
+p.show();
+flag=1;
+break;
+}
+}
+if(flag==0)
+{
+cout<<"record not found ";
+}
+else
+cout<<endl<<"the search was successful ";
+fin.close();
+}
+else
+{
+cout<<"No records are present in the file ";
+}
+}
+
+
+void police::insertp()
+{
+flag=0;
+a=0;
+long pos=0;
+ofstream fx("hello1.dat",ios::binary|ios::app);
+if(!fx)
+{
+exit(1);
+}
+ifstream fin("varun1.dat",ios::binary|ios::app);
+if(!fin)
+{
+cout<<"no such file exists ";
+exit(1);
+}
+cout<<"enter the data of police which has to be added ";
+pnew.getdata();
+for(i=0;i<count2;i++)
+{
+fin.read((char*)&p,sizeof(p));
+if(p.getpno()<pnew.getpno())
+{
+fx.write((char*)&p,sizeof(p));
+pos=fin.tellg();
+}
+else
+{
+fx.write((char*)&pnew,sizeof(pnew));
+flag=1;
+break;
+}
+}
+fin.seekg(pos);
+if(flag==0)
+{
+fx.write((char*)&pnew,sizeof(pnew));
+}
+if(i<count2)
+{
+for(int m=i;m<count2;m++)
+{
+fin.read((char*)&p,sizeof(p));
+fx.write((char*)&p,sizeof(p));
+}
+}
+count2+=1;
+fin.close();
+fx.close();
+remove("varun1.dat");
+rename("hello1.dat","varun1.dat");
+cout<<endl<<"Record added successfully - "<<endl;
+getch();
+}
+
+
+void police::delete1p()
+{
+flag=0;
+a=0;
+if(count2>0)
+{
+ofstream fout("hello1.dat",ios::binary|ios::app);
+if(!fout)
+{
+cout<<"no such file exists ";
+exit(1);
+}
+ifstream fin("varun1.dat",ios::binary|ios::app);
+if(!fin)
+{
+cout<<"no such file present ";
+exit(1);
+}
+for(i=0;i<count2;i++)
+{
+fin.read((char*)&p,sizeof(p));
+cout<<p.getpno();
+cout<<endl;
+}
+fin.close();
+cout<<endl<<"enter the police id to be removed ";
+cin>>a;
+fin.open("varun1.dat",ios::binary|ios::app);
+if(!fin)
+{
+exit(1);
+}
+char ch;
+for(i=0;i<count2;i++)
+{
+fin.read((char*)&p,sizeof(p));
+if(p.getpno()==a)
+{
+cout<<"the record to be deleted contains "<<endl;
+p.show();
+flag=1;
+cout<<endl<<"are you sure you want to delete this record ";
+cin>>ch;
+if(ch=='n')
+{
+fout.write((char*)&p,sizeof(p)) ;
+}
+else if(ch=='y')
+{
+cout<<"record is deleted ";
+flag=2;
+}
+}
+else
+{
+cout<<endl;
+fout.write((char*)&p,sizeof(p));
+}
+}
+if(flag==0)
+{
+cout<<"no such police id. found ";
+}
+if (flag==2)
+{
+count2--;
+}
+fout.close();
+fin.close();
+remove("varun1.dat");
+rename("hello1.dat","varun1.dat");
+if(count2>0)
+{
+cout<<endl<<"now the record contains "<<endl;
+ifstream fx("varun1.dat");
+for(i=0;i<count2;i++)
+{
+fx.read((char*)&p,sizeof(p));
+p.show();
+}
+fx.close();
+}
+else
+{
+cout<<"the file is empty ";
+}
+}
+else
+{
+cout<<"No department records are present in the file ";
+}
+}
+
+
+void police::modifyp()
+{
+flag=0;
+a=0;
+if(count>0)
+{
+int r;
+long pos=0;
+fstream fio("varun1.dat",ios::in|ios::out|ios::binary|ios::app);
+if(!fio)
+{
+cout<<endl<<"no such file exits ";
+exit(1);
+}
+cout<<endl<<"the file currently looks like - "<<endl;
+ifstream fin("varun1.dat",ios::binary|ios::app);
+if(!fin)
+{
+cout<<"no such file exists ";
+exit(1);
+}
+for(i=0;i<count2;i++)
+{
+fin.read((char*)&p,sizeof(p));
+cout<<p.getpno()<<endl;
+}
+cout<<"enter the police id. whose record has to be modified \n";
+cin>>r;
+for(int i=0;i<count2;i++)
+{
+pos=fio.tellg();
+fio.read((char*)&p,sizeof(p));
+if(p.getpno()==r)
+{
+p.change();
+flag=1;
+fio.seekg(pos);
+fio.write((char*)&p,sizeof(p)) ;
+break;
+}
+}
+cout<<"the modified record now looks like - ";
+for(i=0;i<count2;i++)
+{
+if(p.getpno()==r)
+{
+p.show();
+}
+}
+if(flag==0)
+{
+cout<<"no such record exists ";
+}
+fio.seekg(0);
+cout<<endl<<"The remaining records in the file are ";
+for(i=0;i<count2;i++)
+{
+fio.read((char*)&p,sizeof(p));
+p.show();
+}
+fio.close();
+}
+else
+{
+cout<<"No department records are present in the file " ;
+}
+}
+
+void switch1();
+void switch2();
+
+
+
+void switch1()
+{
+int x,flag=0;
+char l;
+A:
+;
+do
+{
+clrscr();
+cout<<endl<<"Here are the following options for you - ";
+cout<<endl<<"CRIMININAL DATA : "<<endl;
+cout<<" 1. Linear search "<<endl;
+cout<<" 2. Insert records "<<endl;
+cout<<" 3. Delete records "<<endl;
+cout<<" 4. Modify records "<<endl;
+cout<<"POLICE DATA : "<<endl;
+cout<<" 5. Linear Search"<<endl;
+cout<<" 6. Insert Records "<<endl;
+cout<<" 7. Delete Records "<<endl;
+cout<<" 8. Modify Records "<<endl;
+cout<<" 9. Crime Analysis "<<endl;
+cout<<" 10. State Analysis "<<endl;
+cout<<" 11. exit "<<endl;
+cout<<"enter your choice ";
+cin>>x;
+ifstream fin("varun.dat",ios::binary|ios::app);
+switch(x)
+{
+case 1:
+s.searchc();
+break;
+case 2:
+s.insertc();
+break;
+case 3:
+s.delete1c();
+break;
+case 4:
+s.modifyc();
+break;
+case 5:
+p.searchp();
+break;
+case 6:
+p.insertp();
+break;
+case 7:
+p.delete1p();
+break;
+case 8:
+p.modifyp();
+break;
+case 9:   an.crimes();
+break;               //Analysis of State and Crime
+case 10:  an.state();
+break;
+case 11:
+exit(0);
+default:
+cout<<endl<<"no such option available "<<endl;
+flag=1;
+}
+cout<<endl<<endl<<"do you want to continue ? ";
+cin>>l;
+}
+while(l=='y');
+
+if(flag==1)
+goto A;
+}
+
+
+
+void switch2()
+{
+int x,flag=0;
+char l;
+A:
+;
+do
+{
+clrscr();
+cout<<endl<<"Here are the following options for you - ";
+cout<<endl<<" 1. Search criminal records "<<endl;
+cout<<" 2. State analysis " <<endl;
+cout<<" 3. Crime analysis "<<endl;
+//cout<<" 4. Crime statistics "<<endl;
+cout<<" 4. Exit "<<endl;
+cout<<"enter your choice ";
+cin>>x;
+ifstream fin("varun.dat",ios::binary|ios::app);
+switch(x)
+{
+
+case 1:
+s.searchc();
+break;
+case 2:    an.state();
+//STATE ANALYSIS
+break;
+case 3:    an.crimes();
+//CRIME ANALYSIS
+break;
+//case 4:
+//CRIME STATISTICS break;
+case 4:
+exit(0);
+break;
+default:cout<<endl<<"no such option available "<<endl;
+flag=1;
+}
+cout<<endl<<endl<<"do you want to continue ? ";
+cin>>l;
+}while(l=='y');
+
+if(flag==1)
+goto A;
+
+}
+
+void countcontrol()
+{
+ifstream fin("varun.dat",ios::binary|ios::app);
+if(!fin)
+{
+count=0;
+}
+else
+{
+fin.seekg(0,ios::end);
+count=(fin.tellg()/sizeof(s));
+fin.close();
+}
+ifstream fin1("varun1.dat",ios::binary|ios::app) ;
+if(!fin1)
+count2=0;
+else
+{
+fin1.seekg(0,ios::end);
+count2=(fin1.tellg()/sizeof(p));
+fin1.close();
+}
+}
+
+
+void main()
+{
+clrscr();
+int pass,m,flag=0;
+countcontrol();
+B:
+;
+clrscr();	       //COUNT FOR POLICEMEN AND CRIMINAL
+cout<<"WELCOME TO ICD  - INDIAN CRIME DATABASE "<<endl<<endl;
+cout<<"Choose amongs the following : "<<endl;
+cout<<" 1. ADMIN "<<endl;
+cout<<" 2. DEPARTMENT "<<endl;
+cout<<" 3. EXIT "<<endl;
+cout<<"Enter your choice : ";
+cin>>m;
+switch(m)
+{
+A:
+;
+case 1:
+cout<<"Enter your password ";
+cin>>pass;
+if(pass==555)
+{
+switch1();
+}
+else
+flag=1;
+break;
+// do the same of count for count2
+
+case 2:
+ifstream fin("varun1.dat",ios::binary|ios::app);
+if(!fin)
+{
+cout<<"no varun1.dat exists " ;
+exit(1);
+}
+cout<<"Enter the password ";
+cin>>pass;
+for(int i=0;i<count2;i++)
+{
+fin.read((char*)&p,sizeof(p));
+if( p.getpno()==pass)
+{
+flag=2;
+cout<<"Welcome User ";
+p.show();
+switch2();
+break;
+}
+}
+if(flag==2)
+break;
+
+else
+{
+cout<<"wrong password entered ";
+flag=0;
+}
+
+break;
+case 3: exit(0);
+default:cout<<"wrong choice entered ";
+goto A;
+}
+if(flag==1||flag==0)
+goto B;
+
+getch();
+}
+

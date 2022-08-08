@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1573924092 source:c:\users\naresh kumar\desktop\doc cod\dp-18\main.cpp
+	<iostream>
+	<process.h>
+	<stdlib.h>
+

@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1573344705 source:c:\users\naresh kumar\desktop\doc cod\link\main.cpp
+	<iostream>
+	<conio.h>
+	<stdlib.h>
+	<process.h>
+

@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1583899542 source:c:\users\naresh kumar\desktop\doc cod\gotoxy\main.cpp
+	<iostream>
+	<windows.h>
+

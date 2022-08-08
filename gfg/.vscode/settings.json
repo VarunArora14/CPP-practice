@@ -1,0 +1,16 @@
+{
+  "files.associations": {
+    "map": "cpp",
+    "numeric": "cpp",
+    "vector": "cpp",
+    "algorithm": "cpp",
+    "climits": "cpp",
+    "utility": "cpp",
+    "xstring": "cpp",
+    "deque": "cpp",
+    "list": "cpp",
+    "unordered_map": "cpp",
+    "xhash": "cpp",
+    "xtree": "cpp"
+  }
+}
