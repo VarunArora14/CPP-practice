@@ -29,7 +29,7 @@ void heapSort(int arr[], int n)
   {
     swap(arr[0], arr[i]);
 
-    heapify(arr, i, 0);
+    heapify(arr, i, 0); // calling heapify till i as from i+1 to n it will be sorted
   }
 }
 

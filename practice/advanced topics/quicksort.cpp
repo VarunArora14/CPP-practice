@@ -20,11 +20,12 @@ using l = long;
 using pii = pair<int, int>;
 using vpii = vector<pair<int, int>>;
 
+// keeps swapping to put elements smaller than pivot to left of nums[hi]/pivot
 int part(vi &nums, int lo, int hi)
 {
   int pivot = nums[hi];
 
-  int i = lo - 1;
+  int i = lo - 1; // keeps track of next element to be filled if nums[j]<pivot
 
   for (int j = lo; j <= hi; j++)
   {

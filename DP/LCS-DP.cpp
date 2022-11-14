@@ -1,6 +1,5 @@
-
 #include <iostream>
-
+#include "vector"
 void func(char[], char[], int, int);
 int main()
 {
@@ -20,7 +19,7 @@ void func(char first[], char second[], int n, int m)
 {
     int k = 0;
     char final[20];
-    int L[n + 1][m + 1];
+    vector<vector<int>> L(n + 1, vector<int>(m + 1));
     int i, j;
     for (i = 0; i <= n; i++)
     {
