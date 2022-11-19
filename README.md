@@ -3041,19 +3041,6 @@ int main() {
 		
 		
 		
-<details>
-<summary>Template</summary>
-
-```cpp
-```
-
-</details>
 
 <br>[⬆ Back to top](#dsa-code-snippets)
 
-<details>
-<summary>About Me</summary>
-
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=kiranpalsingh1806&label=Views&color=blue&style=plastic" alt="kiranpalsingh" /> </p>
-
-</details>
