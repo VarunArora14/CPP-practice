@@ -36,7 +36,7 @@ int main()
 int max=INT16_MIN;
 for(i=0;i<n;i++)
 {
-    for(j=0;j<n;j++)
+    for(int j=0;j<n;j++)
     {
         
     }

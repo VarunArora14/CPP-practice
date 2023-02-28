@@ -1,4 +1,7 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include<vector>
+#include "chrono"
+#include<random>
 using namespace std;
 #define gc getchar_unlocked
 #define fo(i, n) for (i = 0; i < n; i++)
@@ -48,7 +51,6 @@ int a[N];
 
 void solve()
 {
-  int i, j, n, m;
 }
 
 int main()

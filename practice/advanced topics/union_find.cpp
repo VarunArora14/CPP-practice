@@ -56,6 +56,7 @@ void Union(int f, int s)
   s = findParent(s);
 
   // check their ranks, if first has smaller then attach smaller to bigger rank
+  // attaching smaller tree to bigger does not inc height but opposite does
   if (rnk[f] < rnk[s])
   {
     parent[f] = s; // make parent of f as s
